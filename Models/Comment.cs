@@ -1,8 +1,11 @@
-public class Comment
+namespace Practica3_JeanEstrada.Models
 {
-    public int Id { get; set; }
-    public int PostId { get; set; }
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public string Body { get; set; }
+    public class Comment
+    {
+        public int Id { get; set; }
+        public int PostId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Body { get; set; }
+    }
 }

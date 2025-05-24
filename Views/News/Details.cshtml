@@ -1,0 +1,48 @@
+@model Practica3_JeanEstrada.Models.Post
+@{
+    var author = ViewBag.Author as Practica3_JeanEstrada.Models.User;
+    var comments = ViewBag.Comments as List<Practica3_JeanEstrada.Models.Comment>;
+}
+
+<h2>@Model.Title</h2>
+<p>@Model.Body</p>
+
+<hr />
+<h4>Autor:</h4>
+<p>@author.Name (@author.Email)</p>
+
+<hr />
+<h4>Comentarios:</h4>
+<ul>
+@foreach (var comment in comments)
+{
+    <li><strong>@comment.Email:</strong> @comment.Body</li>
+}
+</ul>
+
+<hr />
+<h4>Tu opinión:</h4>
+<button onclick="sendFeedback('like')" class="btn btn-success">👍 Me gustó</button>
+<button onclick="sendFeedback('dislike')" class="btn btn-danger">👎 No me gustó</button>
+
+<script>
+    function sendFeedback(sentimiento) {
+        fetch('/api/feedback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                postId: @Model.Id,
+                sentimiento: sentimiento
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('¡Gracias por tu feedback!');
+            } else {
+                response.text().then(msg => alert(msg));
+            }
+        });
+    }
+</script>
