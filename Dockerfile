@@ -2,12 +2,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
-# Copia los archivos del proyecto
-COPY *.sln .
-COPY Practica3-JeanEstrada/*.csproj ./Practica3-JeanEstrada/
-COPY Practica3-JeanEstrada/. ./Practica3-JeanEstrada/
+# Copia todo desde la raíz del repositorio
+COPY . .
 
-WORKDIR /app/Practica3-JeanEstrada
+# Restaurar dependencias y compilar
 RUN dotnet restore
 RUN dotnet publish -c Release -o /out
 
