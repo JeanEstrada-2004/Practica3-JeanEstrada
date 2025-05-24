@@ -1,10 +1,13 @@
 using Practica3_JeanEstrada.Data;
+using Practica3_JeanEstrada.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient<ApiService>();
+
 
 /* Conexión con el SQLite  */
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -26,12 +29,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=News}/{action=Index}/{id?}");
 
 
 app.Run();

@@ -1,0 +1,62 @@
+@model Practica3_JeanEstrada.Models.Post
+@{
+    var author = ViewBag.Author as Practica3_JeanEstrada.Models.User;
+    var comments = ViewBag.Comments as List<Practica3_JeanEstrada.Models.Comment>;
+}
+
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="mb-3">@Model.Title</h2>
+        <p class="text-muted">@Model.Body</p>
+
+        <hr />
+        <h4>🧑 Autor</h4>
+        <p><strong>@author.Name</strong> - @author.Email</p>
+
+        <hr />
+        <h4>💬 Comentarios</h4>
+        @if (comments?.Count > 0)
+        {
+            <ul class="list-group mb-4">
+            @foreach (var comment in comments)
+            {
+                <li class="list-group-item">
+                    <strong>@comment.Email</strong><br />
+                    @comment.Body
+                </li>
+            }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted">No hay comentarios disponibles.</p>
+        }
+
+        <hr />
+        <h4>¿Te gustó esta publicación?</h4>
+        <button onclick="sendFeedback('like')" class="btn btn-success me-2">👍 Me gustó</button>
+        <button onclick="sendFeedback('dislike')" class="btn btn-danger">👎 No me gustó</button>
+    </div>
+</div>
+
+<script>
+    function sendFeedback(sentimiento) {
+        fetch('/api/feedback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                postId: @Model.Id,
+                sentimiento: sentimiento
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('¡Gracias por tu feedback!');
+            } else {
+                response.text().then(msg => alert(msg));
+            }
+        });
+    }
+</script>
